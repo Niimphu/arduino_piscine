@@ -1,83 +1,110 @@
-#define SWITCH 2
+#define BUTTON 2
 #define GREEN 3
 #define YELLOW 4
 #define RED 5
 
-int         switchState = LOW;
-static bool greenMode = true;
+static bool     greenMode = true;
+unsigned long   redDelay = 1000;
+unsigned long   yellowDelay = 1000;
+int             defaultRedMode = LOW;
+int             defaultYellowMode = LOW;
+int             redMode = defaultRedMode;
+int             yellowMode = defaultYellowMode;
 
-//setup runs once on start
+//setup runs once on program start
 void  setup() {
-  pinMode(SWITCH,INPUT); //pinMode() sets the mode of a digital pin on the Arduino board
+  pinMode(BUTTON,INPUT); //pinMode() sets the mode of a digital pin on the Arduino board
   pinMode(GREEN,OUTPUT);
   pinMode(YELLOW,OUTPUT);
   pinMode(RED,OUTPUT);
   startupFlash();
+  bonus(0); //0 for mandatory, 1 and 2 for the bonus parts
 }
 
 //loops during runtime of program
 void  loop() {
-  switchState = digitalRead(SWITCH);
-  if (switchState == HIGH)
-    switchPressed();
-  if (greenMode)
-    greeen();
-  else
+  int buttonState = digitalRead(BUTTON);
+
+  if (buttonState == HIGH)
+    buttonPressed();
+  if (!greenMode)
     redYellowPartyWoo();
 }
 
-void  switchPressed() {
-  static unsigned long  lastSwitchPressedTime = 0;
-  const unsigned long   buttonCooldown = 600;
+void  buttonPressed() {
+  static unsigned long  lastPressedTime = 0;
+  const unsigned long   buttonCooldown = 300;
 
-  if (!isCooldownOver(lastSwitchPressedTime, buttonCooldown))
+  if (!isCooldownOver(lastPressedTime, buttonCooldown))
     return ;
-  lastSwitchPressedTime = getCurrentTime();
-  greenMode = (greenMode == true) ? false : true;
+  lastPressedTime = getCurrentTime();
+  changeMode();
 }
 
-void  greeen() {
-  digitalWrite(GREEN, HIGH); //digitalWrite writes digital values(HIGH,LOW) to the digital pins(like our LEDs and switch) on the Arduino board
-  digitalWrite(YELLOW, LOW);
-  digitalWrite(RED, LOW);
+void  changeMode() {
+  greenMode = !greenMode;
+  if (greenMode)
+  {  
+    digitalWrite(GREEN, HIGH); //digitalWrite writes digital values(HIGH,LOW) to the digital pins(like our LEDs and BUTTON) on the Arduino board
+    digitalWrite(YELLOW, LOW);
+    digitalWrite(RED, LOW);
+  }
+  else
+  {
+    digitalWrite(GREEN, LOW);
+    yellowMode = defaultYellowMode;
+    redMode = defaultRedMode;
+  }
 }
 
 void  redYellowPartyWoo() {
-  digitalWrite(GREEN, LOW);
   redParty();
   yellowParty();
 }
 
 void  redParty() {
   static unsigned long  lastChangeTime = 0;
-  const unsigned long   delay = 1000;
-  static int            mode = HIGH;
 
-  if (!isCooldownOver(lastChangeTime, delay))
+  if (!isCooldownOver(lastChangeTime, redDelay))
     return ;
   lastChangeTime = getCurrentTime();
-  mode = (mode == HIGH) ? LOW : HIGH;
-  digitalWrite(RED, mode);
+  redMode = !redMode;
+  digitalWrite(RED, redMode);
 }
 
 void  yellowParty() {
   static unsigned long  lastChangeTime = 0;
-  const unsigned long   delay = 1000;
-  static int            mode = HIGH;
 
-  if (!isCooldownOver(lastChangeTime, delay))
+  if (!isCooldownOver(lastChangeTime, yellowDelay))
     return ;
   lastChangeTime = getCurrentTime();
-  mode = (mode == HIGH) ? LOW : HIGH;
-  digitalWrite(YELLOW, mode);
+  yellowMode = !yellowMode;
+  digitalWrite(YELLOW, yellowMode);
 }
 
-bool  isCooldownOver(unsigned long lastTime, const unsigned long cooldown) {
-  return (millis() - lastTime > cooldown);
+void  blink(int lightPin) {
+  digitalWrite(lightPin, HIGH);
+  digitalWrite(lightPin, LOW);
 }
 
 int getCurrentTime() {
   return(millis());
+}
+
+bool  isCooldownOver(unsigned long lastTime, const unsigned long cooldown) {
+  return (getCurrentTime() - lastTime > cooldown);
+}
+
+void  bonus(int bonusEx) {
+  if (bonusEx == 1 || bonusEx == 2)
+    yellowDelay = 2000;
+  if (bonusEx == 1)
+  {
+    defaultYellowMode = HIGH;
+    redDelay = 2000;
+  }
+  if (bonusEx == 2)
+    redDelay = 500;
 }
 
 //fun flashy colours :))))
@@ -86,15 +113,14 @@ void  startupFlash() {
 
   while (i--)
   {
-    digitalWrite(GREEN, HIGH);
-    digitalWrite(RED, LOW);
-    delay(100);
+    digitalWrite(RED, HIGH);
     digitalWrite(GREEN, LOW);
+    delay(100);
+    digitalWrite(RED, LOW);
     digitalWrite(YELLOW, HIGH);
     delay(100);
-    digitalWrite(RED, HIGH);
+    digitalWrite(GREEN, HIGH);
     digitalWrite(YELLOW, LOW);
     delay(100);
   }
-  digitalWrite(RED, LOW);
 }
