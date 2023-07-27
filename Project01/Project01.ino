@@ -6,6 +6,7 @@
 static bool     greenMode = true;
 unsigned long   redDelay = 1000;
 unsigned long   yellowDelay = 1000;
+unsigned long   blinkDelay = 50;
 int             defaultRedMode = LOW;
 int             defaultYellowMode = LOW;
 int             redMode = defaultRedMode;
@@ -18,7 +19,7 @@ void  setup() {
   pinMode(YELLOW,OUTPUT);
   pinMode(RED,OUTPUT);
   startupFlash();
-  bonus(0); //0 for mandatory, 1 and 2 for the bonus parts
+  bonus(2); //0 for mandatory, 1 and 2 for the bonus parts
 }
 
 //loops during runtime of program
