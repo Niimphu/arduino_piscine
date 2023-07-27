@@ -82,11 +82,6 @@ void  yellowParty() {
   digitalWrite(YELLOW, yellowMode);
 }
 
-void  blink(int lightPin) {
-  digitalWrite(lightPin, HIGH);
-  digitalWrite(lightPin, LOW);
-}
-
 int getCurrentTime() {
   return(millis());
 }
