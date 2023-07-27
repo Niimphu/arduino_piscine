@@ -12,6 +12,7 @@ void  setup() {
   pinMode(GREEN,OUTPUT);
   pinMode(YELLOW,OUTPUT);
   pinMode(RED,OUTPUT);
+  startupFlash();
 }
 
 //loops during runtime of program
@@ -77,4 +78,22 @@ bool  isCooldownOver(unsigned long lastTime, const unsigned long cooldown) {
 
 int getCurrentTime() {
   return(millis());
+}
+
+//fun flashy colours :))))
+void  startupFlash() {
+  int i = 5;
+
+  while (i--)
+  {
+    digitalWrite(GREEN, HIGH);
+    digitalWrite(RED, LOW);
+    delay(100);
+    digitalWrite(GREEN, LOW);
+    digitalWrite(YELLOW, HIGH);
+    delay(100);
+    digitalWrite(RED, HIGH);
+    digitalWrite(YELLOW, LOW);
+    delay(100);
+  }
 }
