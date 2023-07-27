@@ -96,4 +96,5 @@ void  startupFlash() {
     digitalWrite(YELLOW, LOW);
     delay(100);
   }
+  digitalWrite(RED, LOW);
 }
