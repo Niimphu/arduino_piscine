@@ -31,7 +31,7 @@ void  switchPressed() {
 
   if (!isCooldownOver(lastSwitchPressedTime, buttonCooldown))
     return ;
-  lastSwitchPressedTime = millis(); //millis() gets time in ms since the program started
+  lastSwitchPressedTime = getCurrentTime();
   greenMode = (greenMode == true) ? false : true;
 }
 
@@ -54,7 +54,7 @@ void  redParty() {
 
   if (!isCooldownOver(lastChangeTime, delay))
     return ;
-  lastChangeTime = millis();
+  lastChangeTime = getCurrentTime();
   mode = (mode == HIGH) ? LOW : HIGH;
   digitalWrite(RED, mode);
 }
@@ -66,11 +66,15 @@ void  yellowParty() {
 
   if (!isCooldownOver(lastChangeTime, delay))
     return ;
-  lastChangeTime = millis();
+  lastChangeTime = getCurrentTime();
   mode = (mode == HIGH) ? LOW : HIGH;
   digitalWrite(YELLOW, mode);
 }
 
 bool  isCooldownOver(unsigned long lastTime, const unsigned long cooldown) {
   return (millis() - lastTime > cooldown);
+}
+
+int getCurrentTime() {
+  return(millis());
 }
