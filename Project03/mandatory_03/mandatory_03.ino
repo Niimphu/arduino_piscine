@@ -3,8 +3,8 @@
 Servo motor;
 
 void setup() {
-  motor.attach(4);
-  motor.write(0); 
+  motor.attach(4); // first motor
+  motor.write(0); // second motor
 }
 
 void loop() {
@@ -16,6 +16,7 @@ void loop() {
   // find the maximum light value and corresponding sensor
   int maxLightValue = max(lightValue1, max(lightValue2, lightValue3));
 
+  //motor continiously moves until we can determine where is the light source
   if (lightValue1 < 100 && lightValue2 < 100 && lightValue3 < 100) {
     motor.write(0);
     delay(700);
@@ -26,19 +27,22 @@ void loop() {
     motor.write(90);
     delay(700);
   }
-  else {
-    if (maxLightValue == lightValue1) {
-      // turn motor towards sensor 1 (right one on the breadboard)
-      motor.write(0);   
-    }
-    else if (maxLightValue == lightValue2) {
-      // turn motor towards sensor 2 (middle one on the breadboard)
-      motor.write(90);  
-    }
-    else {
-      // turn motor towards sensor 3 (left one on the breadboard)
-      motor.write(180);
-    }
-  delay(1000);  // delay before checking again
+
+//show which sensor is closest to light source
+  if (maxLightValue >= 800) {
+	if (maxLightValue == lightValue1) {
+	// turn motor towards sensor 1 (right one on the breadboard)
+	motor.write(0);
+	}
+	else if (maxLightValue == lightValue2) {
+	// turn motor towards sensor 2 (middle one on the breadboard)
+	motor.write(90);
+	}
+	else {
+	// turn motor towards sensor 3 (left one on the breadboard)
+	motor.write(180);
+	}
+
+  delay(700);  // delay before checking again
   }
 }
