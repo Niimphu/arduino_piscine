@@ -17,7 +17,7 @@ void loop() {
   int maxLightValue = max(lightValue1, max(lightValue2, lightValue3));
 
   //motor continiously moves until we can determine where is the light source
-  if (lightValue1 < 100 && lightValue2 < 100 && lightValue3 < 100) {
+  if (lightValue1 < 250 && lightValue2 < 250 && lightValue3 < 250) {
     motor.write(0);
     delay(700);
     motor.write(90);
@@ -32,7 +32,7 @@ void loop() {
   if (maxLightValue >= 800) {
 	if (maxLightValue == lightValue1) {
 	// turn motor towards sensor 1 (right one on the breadboard)
-	motor.write(0);
+	motor.write(180);
 	}
 	else if (maxLightValue == lightValue2) {
 	// turn motor towards sensor 2 (middle one on the breadboard)
@@ -40,7 +40,7 @@ void loop() {
 	}
 	else {
 	// turn motor towards sensor 3 (left one on the breadboard)
-	motor.write(180);
+	motor.write(0);
 	}
 
   delay(700);  // delay before checking again
