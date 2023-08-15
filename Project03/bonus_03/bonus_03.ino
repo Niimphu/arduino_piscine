@@ -40,7 +40,7 @@ void loop() {
   if (maxLightValue >= 800) {
     if (maxLightValue == lightValue1) {
       // turn leftrights towards sensor 1 (right one on the breadboard)
-      leftright.write(0);
+      leftright.write(180);
     }
     else if (maxLightValue == lightValue2) {
       // turn leftrights towards sensor 2 (middle one on the breadboard)
@@ -48,21 +48,21 @@ void loop() {
     }
     else {
       // turn leftrights towards sensor 3 (left one on the breadboard)
-      leftright.write(180);
+      leftright.write(0);
     }
   }
 
   //motor 2: works vertically, shows how far is the light source from the sensor
-    if (maxLightValue < 800){
+    if (maxLightValue < 700){
       updown.write(0);
     }
-    else if (maxLightValue < 1000){
+    else if (maxLightValue < 820){
       updown.write(45);
     }
-    else if (maxLightValue < 1100){
+    else if (maxLightValue < 950){
       updown.write(90);
     }
-    else if (maxLightValue < 1300){
+    else if (maxLightValue < 1000){
       updown.write(135);
     }
     else {
