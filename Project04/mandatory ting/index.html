@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: re peat(8, 1fr);
+    gap: 10px; /* Adjust this value for spacing */
+    margin: 20px;
+	width: 400px;
+  }
+
+  .grid-button {
+    width: 50px;
+    height: 50px;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+  }
+</style>
+<title>Button Grid</title>
+</head>
+<body>
+  <div class="grid-container" id="grid">
+  </div>
+
+  <script>
+    const gridContainer = document.getElementById('grid');
+
+    // Function to handle button click event
+    function handleButtonClick(event) {
+      const button = event.target;
+      button.style.backgroundColor = getRandomColor();
+    }
+
+    // Generate 8x8 grid of buttons using JavaScript
+    for (let row = 1; row <= 8; row++) {
+      for (let col = 1; col <= 8; col++) {
+        const button = document.createElement('button');
+        button.className = 'grid-button';
+        button.id = 'button-' + row + '-' + col;
+        button.addEventListener('click', handleButtonClick); // Attach click event listener
+        gridContainer.appendChild(button);
+      }
+    }
+
+    // Function to generate a random color
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+  </script>
+</body>
+</html>
